@@ -1,5 +1,6 @@
 const mongoose= require('mongoose');
 const bcrypt = require('bcrypt');
+
 const userScheme = new mongoose.Schema({
     firstName:{
         type:String,
@@ -51,12 +52,12 @@ const userScheme = new mongoose.Schema({
 
 userScheme.virtual('password')
 .set(function(password){
-    this.hashPassword = bcrypt.hashSync(password,20);
+    this.hashPassword = bcrypt.hashSync(password,10);
 })
 
-userScheme.method= {
-    authenticate:function(password){
-        return bcrypt.compareSync(password,this.hashPassword);
+userScheme.methods= {
+    authenticate:async function(password){
+        return await bcrypt.compareSync(password,this.hashPassword);
     }
 }
 
